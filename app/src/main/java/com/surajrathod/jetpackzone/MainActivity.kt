@@ -48,7 +48,7 @@ data class Header(
             var list: MutableList<Header> = emptyList<Header>().toMutableList()
             for (i in 1..100) {
                 val items: MutableList<String> = emptyList<String>().toMutableList()
-                for (j in 1..10) {
+                for (j in 1..6) {
                     items.add(j.toString())
                 }
                 list.add(
@@ -58,6 +58,18 @@ data class Header(
                     )
                 )
             }
+            return list
+        }
+
+        fun getColorsList(): List<Color> {
+            val list = listOf<Color>(
+                Color.Cyan,
+                Color.Green,
+                Color.Black,
+                Color.Magenta,
+                Color.Red,
+                Color.Yellow
+            )
             return list
         }
     }
@@ -111,7 +123,7 @@ fun HeaderItems(headers: Header, onItemClick: (String) -> Unit) {
         Text(text = headers.title)
         LazyRow() {
             items(headers.items) {
-                Item(it) {
+                Item(it, Header.getColorsList()[headers.items.indexOf(it)]) {
                     onItemClick("Value of i = ${headers.title} j = $it")
                 }
             }
@@ -121,13 +133,17 @@ fun HeaderItems(headers: Header, onItemClick: (String) -> Unit) {
 
 @Preview(showBackground = false)
 @Composable
-private fun Item(name: String = "Sample Text", onItemClick: (String) -> Unit = {}) {
+private fun Item(
+    name: String = "Sample Text",
+    color: Color = Color.Black,
+    onItemClick: (String) -> Unit = {}
+) {
 
     Box(
         modifier = Modifier
             .size(120.dp)
             .clip(CircleShape)
-            .background(Color.Green)
+            .background(color)
             .clickable {
                 onItemClick(name)
             }
@@ -146,8 +162,6 @@ private fun Item(name: String = "Sample Text", onItemClick: (String) -> Unit = {
 }
 
 
-
-
 @Composable
 fun ListComposable(myList: List<String> = listOf("Suraj", "King")) {
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
@@ -164,6 +178,6 @@ fun ListComposable(myList: List<String> = listOf("Suraj", "King")) {
 @Composable
 fun GreetingPreview() {
     JetPackZoneTheme {
-        
+
     }
 }
